@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from pathlib import Path
 
 A = 1.0
 alpha = 0.5
@@ -13,7 +14,10 @@ D_gr = delta * K_gr
 C_gr = F_gr - D_gr
 s_gr = delta * K_gr / F_gr
 
-fig, ax = plt.subplots(figsize=(9, 6))
+Path('Figures').mkdir(parents=True, exist_ok=True)
+
+fig, ax = plt.subplots(figsize=(9, 6), facecolor='white')
+ax.set_facecolor('white')
 ax.plot(K, F, label=r'$F(K)=A K^{\alpha}$')
 ax.plot(K, D, label=r'$\delta K$')
 ax.vlines(K_gr, 0, F_gr, linestyles='--', label=r'$K_{GR}$')
@@ -33,4 +37,5 @@ ax.set_title('Solow Golden Rule: maximize steady-state consumption')
 ax.legend(loc='lower right')
 ax.grid(True, alpha=0.3)
 plt.tight_layout()
-plt.savefig('Figures/solow_golden_rule.png', dpi=200)
+plt.savefig('Figures/solow_golden_rule.png', dpi=200, facecolor='white', transparent=False)
+plt.close(fig)
