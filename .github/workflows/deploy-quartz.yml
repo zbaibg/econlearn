@@ -39,6 +39,24 @@ jobs:
           cache: npm
           cache-dependency-path: quartz-site/package-lock.json
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install plotting dependencies
+        run: python -m pip install --upgrade pip numpy matplotlib
+
+      - name: Generate figures from math scripts
+        working-directory: vault
+        env:
+          MPLBACKEND: Agg
+        run: |
+          set -euo pipefail
+          mkdir -p Figures
+          python Scripts/solow_diagram.py
+          python Scripts/solow_golden_rule.py
+
       - name: Prepare Quartz configuration and content
         shell: bash
         run: |
