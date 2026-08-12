@@ -56,6 +56,7 @@ jobs:
           mkdir -p Figures
           python Scripts/solow_diagram.py
           python Scripts/solow_golden_rule.py
+          python Scripts/solow_convergence.py
 
       - name: Prepare Quartz configuration and content
         shell: bash
