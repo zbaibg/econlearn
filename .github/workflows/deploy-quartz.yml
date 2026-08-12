@@ -51,6 +51,8 @@ jobs:
           cp ../vault/Home.md content/index.md
           cp -R ../vault/Concepts content/Concepts
           cp -R ../vault/Economics content/Economics
+          cp -R ../vault/Figures content/Figures
+          cp -R ../vault/Scripts content/Scripts
 
       - name: Install dependencies
         working-directory: quartz-site
