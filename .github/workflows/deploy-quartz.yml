@@ -1,0 +1,81 @@
+name: Deploy Quartz site to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out EconLearn vault
+        uses: actions/checkout@v6
+        with:
+          path: vault
+          fetch-depth: 0
+
+      - name: Check out Quartz
+        uses: actions/checkout@v6
+        with:
+          repository: jackyzha0/quartz
+          ref: v5
+          path: quartz-site
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: quartz-site/package-lock.json
+
+      - name: Prepare Quartz configuration and content
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd quartz-site
+          cp quartz.config.default.yaml quartz.config.yaml
+          sed -i 's/pageTitle: Quartz 5/pageTitle: EconLearn/' quartz.config.yaml
+          sed -i 's#baseUrl: quartz.jzhao.xyz#baseUrl: zbaibg.github.io/econlearn#' quartz.config.yaml
+          rm -rf content/*
+          cp ../vault/Home.md content/index.md
+          cp -R ../vault/Concepts content/Concepts
+          cp -R ../vault/Economics content/Economics
+
+      - name: Install dependencies
+        working-directory: quartz-site
+        run: npm ci
+
+      - name: Install Quartz plugins
+        working-directory: quartz-site
+        run: npx quartz plugin install --from-config
+
+      - name: Build Quartz
+        working-directory: quartz-site
+        run: npx quartz build
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: quartz-site/public
+
+  deploy:
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
