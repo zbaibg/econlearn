@@ -73,6 +73,32 @@ $K^*$ 是系统的固定点。
 
 因此 $K^*$ 往往是稳定固定点。
 
+### 图：投资、折旧与稳态
+
+下面的图直接由生产函数
+
+$$
+F(K)=AK^\alpha
+$$
+
+生成，参数取 $A=1$、$\alpha=0.5$、$\delta=0.1$。比较两个储蓄率 $s_1=0.20$ 与 $s_2=0.35$：
+
+![Solow steady states](../Figures/solow_steady_state.png)
+
+可以看到提高储蓄率会把投资曲线 $sF(K)$ 向上推，从而把稳态资本存量从
+
+$$
+K_1^*=4
+$$
+
+移动到
+
+$$
+K_2^*=12.25.
+$$
+
+图由 [[../Scripts/solow_diagram.py|solow_diagram.py]] 生成。
+
 ## 4. 一个具体例子：Cobb-Douglas
 
 令：
