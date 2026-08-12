@@ -57,6 +57,7 @@ jobs:
           python Scripts/solow_diagram.py
           python Scripts/solow_golden_rule.py
           python Scripts/solow_convergence.py
+          python Scripts/solow_technology_progress.py
 
       - name: Prepare Quartz configuration and content
         shell: bash
